@@ -1,0 +1,254 @@
+:root {
+    --bg-color: #0d0d0d;
+    --panel-color: #1a1a1a;
+    --border-color: #333;
+    --text-primary: #00ff00;
+    --text-secondary: #00e0e0;
+    --shadow-color: rgba(0, 255, 0, 0.3);
+    --neon-glow: 4px 4px 10px var(--text-primary);
+    --font-main: 'Orbitron', sans-serif;
+    --transition-speed: 0.3 s;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding-top: 60px; /* Высота шапки */
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#matrixCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.25; /* Сниженная интенсивность */
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background-color: var(--panel-color);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 1000;
+}
+
+.header-title {
+    font-family: var(--font-main);
+    font-size: 2em;
+    color: var(--text-primary);
+    text-shadow: var(--neon-glow);
+    cursor: pointer;
+    user-select: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.header-info {
+    font-family: var(--font-main);
+    color: var(--text-secondary);
+    user-select: none;
+    opacity: 0;
+    transition: opacity var(--transition-speed);
+}
+.header-info.visible {
+    opacity: 1;
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.scale-buttons { display: flex; gap: 8px; }
+
+.scale-buttons button, .back-button {
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    font-size: 1.5em;
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.scale-buttons button:hover, .back-button:hover {
+    background-color: var(--text-primary);
+    color: var(--bg-color);
+    border-color: var(--text-primary);
+    box-shadow: 0 0 15px var(--shadow-color);
+}
+
+.back-button {
+    font-size: 1.8em;
+    visibility: hidden;
+    opacity: 0;
+}
+.back-button.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.content-wrapper {
+    display: flex;
+    height: calc(100vh - 60px);
+}
+
+.image-gallery {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    transition: margin-left var(--transition-speed), width var(--transition-speed);
+}
+
+.image-gallery.panel-active {
+    margin-left: 350px; /* Ширина панели */
+    width: calc(100% - 350px);
+}
+
+/* Стили для скроллбара */
+.image-gallery::-webkit-scrollbar { width: 8px; }
+.image-gallery::-webkit-scrollbar-track { background: var(--bg-color); }
+.image-gallery::-webkit-scrollbar-thumb { background-color: var(--text-primary); border-radius: 10px; border: 2px solid var(--bg-color); }
+
+/* --- Стили для видов --- */
+.image-gallery.view-months, .image-gallery.view-days {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: flex-start;
+    gap: 20px;
+}
+
+.image-gallery.view-images {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns, 4), 1fr);
+    gap: 15px;
+}
+
+/* --- Стили для элементов --- */
+.folder-item {
+    --folder-size: 200px;
+    width: var(--folder-size);
+    height: var(--folder-size);
+    background-color: rgba(26, 26, 26, 0.7);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: var(--font-main);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    transition: all var(--transition-speed);
+}
+.folder-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--text-primary);
+    box-shadow: 0 10px 20px var(--shadow-color);
+}
+.folder-month { font-size: 1.5em; }
+.folder-year { font-size: 0.8em; color: var(--text-secondary); }
+.folder-day { font-size: 2.5em; }
+.folder-img-count { font-size: 0.8em; margin-top: 10px; color: var(--text-secondary); }
+
+.image-item {
+    border: 1px solid transparent;
+    overflow: hidden;
+    border-radius: 6px;
+    aspect-ratio: 1 / 0.75;
+    position: relative;
+    transition: all var(--transition-speed) ease-in-out;
+    background-color: #111;
+}
+
+.image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+    transition: opacity var(--transition-speed);
+}
+
+.image-item.enlarged {
+    transform: scale(3);
+    border-color: var(--text-primary);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+/* Скрытие ненужных элементов в зависимости от вида */
+.view-months .image-item, .view-days .image-item { display: none; }
+.view-images .folder-item { display: none; }
+
+/* --- Панель с детальной информацией --- */
+.image-detail-panel {
+    position: fixed;
+    left: -350px; /* Скрыта за экраном */
+    top: 60px;
+    width: 350px;
+    height: calc(100vh - 60px);
+    background-color: var(--panel-color);
+    border-right: 1px solid var(--border-color);
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 900;
+    transition: left var(--transition-speed);
+    display: flex;
+    flex-direction: column;
+}
+.image-detail-panel.active {
+    left: 0;
+}
+
+.detail-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: transform var(--transition-speed);
+}
+.detail-close:hover { transform: rotate(90deg); }
+
+.image-detail-panel img {
+    width: 100%;
+    border-radius: 4px;
+    margin-top: 30px;
+}
+
+.detail-info {
+    margin-top: 20px;
+    font-family: var(--font-main);
+    color: var(--text-secondary);
+    word-wrap: break-word;
+}

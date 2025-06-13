@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E.N.I.G.M.A</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="matrixCanvas"></canvas>
+
+    <header class="header">
+        <div id="sideHeaderInfo" class="header-info">
+            <div class="header-info-date"></div>
+            <div class="header-info-code"></div>
+        </div>
+        <h1 id="mainHeaderTitle" class="header-title">E.N.I.G.M.A</h1>
+        <div class="header-buttons">
+            <div class="scale-buttons">
+                <button id="zoomOut" title="Уменьшить размер">-</button>
+                <button id="zoomIn" title="Увеличить размер">+</button>
+            </div>
+            <button id="backButton" title="Назад" class="back-button">&lt;</button>
+        </div>
+    </header>
+
+    <main id="contentWrapper" class="content-wrapper">
+        <div id="imageGallery" class="image-gallery">
+            </div>
+        <aside id="imageDetailPanel" class="image-detail-panel">
+            <span id="detailCloseButton" class="detail-close">&times;</span>
+            <img id="detailImage" src="" alt="Detail view">
+            <div id="detailInfo" class="detail-info"></div>
+        </aside>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
